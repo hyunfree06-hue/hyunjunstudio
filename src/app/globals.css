@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #ff8a5b;
+  --accent: #ffd86e;
+  --cream: #fffbf5;
+  --ink: #2b2b2b;
+  --success: #7cc29b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--ink);
+  background: var(--cream);
+  font-family: Pretendard, Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gradient-hero {
+    background: linear-gradient(
+      135deg,
+      #fffbf5 0%,
+      #ffe8d6 45%,
+      #e8f5ef 100%
+    );
+  }
+
+  .gradient-cta {
+    background: linear-gradient(90deg, #ff8a5b 0%, #ffb08a 50%, #ffd86e 100%);
+  }
+}
+
+/* MD Editor overrides for admin */
+.w-md-editor {
+  border-radius: 1rem !important;
+  overflow: hidden;
+}
