@@ -1,38 +1,40 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { values } from "@/data/content";
 import { Card } from "@/components/ui/Card";
+import { FadeIn, SectionLabel } from "@/components/ui/Section";
 
 export function Values() {
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-20">
-      <motion.h2
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mb-10 text-center text-2xl font-extrabold text-ink sm:text-3xl"
-      >
-        이렇게 일해요
-      </motion.h2>
-      <div className="grid gap-5 md:grid-cols-3">
-        {values.map((v, i) => (
-          <motion.div
-            key={v.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <Card hover className="h-full text-center">
-              <div className="mb-3 text-3xl">{v.emoji}</div>
-              <h3 className="text-lg font-bold text-ink">{v.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-                {v.description}
-              </p>
-            </Card>
-          </motion.div>
-        ))}
+    <section className="mx-auto max-w-6xl px-5 py-24 sm:px-8 md:py-32">
+      <FadeIn>
+        <SectionLabel>— 01 / APPROACH</SectionLabel>
+        <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+          이렇게 일해요
+        </h2>
+      </FadeIn>
+
+      <div className="mt-14 grid gap-6 md:grid-cols-3 md:gap-8">
+        {values.map((v, i) => {
+          const Icon = v.icon;
+          return (
+            <FadeIn key={v.title} delay={i * 0.06}>
+              <Card hover className="h-full">
+                <Icon
+                  strokeWidth={1.5}
+                  size={22}
+                  className="text-ink-light transition-colors duration-200 group-hover:text-coral"
+                />
+                <h3 className="mt-6 text-lg font-semibold tracking-tight text-ink">
+                  {v.title}
+                </h3>
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+                  {v.description}
+                </p>
+              </Card>
+            </FadeIn>
+          );
+        })}
       </div>
     </section>
   );

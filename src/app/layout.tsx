@@ -36,9 +36,9 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
         />
       </head>
-      <body className={`${inter.variable} min-h-screen antialiased`}>
+      <body className={`${inter.variable} min-h-screen bg-paper antialiased`}>
         <Header />
-        <main className="animate-fade-in">{children}</main>
+        <main>{children}</main>
         <Footer />
         <MobileStickyCta />
       </body>

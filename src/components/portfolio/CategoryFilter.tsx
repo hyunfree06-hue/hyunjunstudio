@@ -10,16 +10,16 @@ export function CategoryFilter() {
   const current = searchParams.get("category") || "전체";
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-x-1 gap-y-2 border-b border-paper-line">
       {CATEGORIES.map((cat) => (
         <Link
           key={cat}
           href={cat === "전체" ? "/portfolio" : `/portfolio?category=${cat}`}
           className={cn(
-            "rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+            "-mb-px border-b-2 px-3 py-2.5 text-sm transition-colors",
             current === cat
-              ? "bg-primary text-white shadow-soft"
-              : "bg-white text-ink-muted border border-ink/10 hover:border-primary/30 hover:text-ink"
+              ? "border-ink font-medium text-ink"
+              : "border-transparent text-ink-muted hover:text-ink"
           )}
         >
           {cat}

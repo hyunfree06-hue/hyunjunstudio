@@ -30,11 +30,11 @@ export function LoginForm() {
           inputMode="numeric"
           autoComplete="current-password"
           placeholder="숫자 비밀번호"
-          className="w-full rounded-2xl border border-ink/10 bg-white px-4 py-3 text-center text-lg tracking-widest outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+          className="w-full rounded-lg border border-paper-line bg-paper px-4 py-3 text-center text-lg tracking-widest outline-none focus:border-ink"
         />
       </div>
       {state.error && (
-        <p className="rounded-2xl bg-red-50 px-4 py-3 text-center text-sm text-red-600">
+        <p className="border border-coral/30 bg-coral/5 px-4 py-3 text-center text-sm text-coral">
           {state.error}
         </p>
       )}

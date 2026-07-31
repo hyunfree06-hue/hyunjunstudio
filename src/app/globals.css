@@ -3,11 +3,9 @@
 @tailwind utilities;
 
 :root {
-  --primary: #ff8a5b;
-  --accent: #ffd86e;
-  --cream: #fffbf5;
-  --ink: #2b2b2b;
-  --success: #7cc29b;
+  --coral: #ff6b4a;
+  --ink: #1a1a1a;
+  --paper: #fdfcfa;
 }
 
 html {
@@ -16,9 +14,17 @@ html {
 
 body {
   color: var(--ink);
-  background: var(--cream);
-  font-family: Pretendard, Inter, sans-serif;
+  background: var(--paper);
+  font-family: "Pretendard Variable", Pretendard, Inter, -apple-system,
+    sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgba(255, 107, 74, 0.18);
+  color: #1a1a1a;
 }
 
 @layer utilities {
@@ -26,22 +32,27 @@ body {
     text-wrap: balance;
   }
 
-  .gradient-hero {
-    background: linear-gradient(
-      135deg,
-      #fffbf5 0%,
-      #ffe8d6 45%,
-      #e8f5ef 100%
-    );
+  .hero-grid {
+    background-image: linear-gradient(
+        to right,
+        rgba(26, 26, 26, 0.04) 1px,
+        transparent 1px
+      ),
+      linear-gradient(to bottom, rgba(26, 26, 26, 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
 
-  .gradient-cta {
-    background: linear-gradient(90deg, #ff8a5b 0%, #ffb08a 50%, #ffd86e 100%);
+  .hero-fade {
+    background: radial-gradient(
+      ellipse 80% 60% at 70% 40%,
+      rgba(255, 107, 74, 0.06) 0%,
+      transparent 70%
+    );
   }
 }
 
 /* MD Editor overrides for admin */
 .w-md-editor {
-  border-radius: 1rem !important;
+  border-radius: 0.75rem !important;
   overflow: hidden;
 }

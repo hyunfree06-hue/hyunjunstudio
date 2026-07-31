@@ -8,14 +8,14 @@ export const metadata: Metadata = {
 
 export default function AdminLoginPage() {
   return (
-    <div className="flex min-h-[70vh] items-center justify-center px-4 py-16">
-      <div className="w-full max-w-sm rounded-3xl border border-ink/5 bg-white p-8 shadow-soft">
-        <h1 className="mb-2 text-center text-2xl font-extrabold text-ink">
+    <div className="flex min-h-[70vh] items-center justify-center px-5 py-16">
+      <div className="w-full max-w-sm border border-paper-line bg-paper p-8">
+        <p className="mb-2 text-center text-xs font-medium tracking-[0.18em] text-ink-light">
+          ADMIN
+        </p>
+        <h1 className="mb-8 text-center text-2xl font-extrabold tracking-tight text-ink">
           관리자
         </h1>
-        <p className="mb-8 text-center text-sm text-ink-muted">
-          비밀번호를 입력해 주세요
-        </p>
         <LoginForm />
       </div>
     </div>

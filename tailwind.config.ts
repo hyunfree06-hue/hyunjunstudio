@@ -9,52 +9,45 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: "#FF8A5B",
-          light: "#FFB08A",
-          dark: "#E56F40",
-        },
-        accent: {
-          DEFAULT: "#FFD86E",
-          light: "#FFE9A8",
-        },
-        cream: {
-          DEFAULT: "#FFFBF5",
-          dark: "#FFF3E6",
+        coral: {
+          DEFAULT: "#FF6B4A",
+          dark: "#E85535",
+          light: "#FF8A70",
         },
         ink: {
-          DEFAULT: "#2B2B2B",
-          muted: "#6B6B6B",
-          light: "#9A9A9A",
+          DEFAULT: "#1A1A1A",
+          muted: "#666666",
+          light: "#999999",
+          faint: "#B3B3B3",
         },
-        success: "#7CC29B",
-        mint: "#C8E8D8",
+        paper: {
+          DEFAULT: "#FDFCFA",
+          warm: "#F7F5F2",
+          line: "#E8E5E0",
+        },
+        kakao: "#FEE500",
       },
       fontFamily: {
-        sans: ["Pretendard", "Inter", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
+        sans: [
+          "Pretendard Variable",
+          "Pretendard",
+          "Inter",
+          "-apple-system",
+          "sans-serif",
+        ],
+      },
+      fontSize: {
+        "display": [
+          "clamp(2.75rem, 7vw, 4.5rem)",
+          { lineHeight: "1.05", letterSpacing: "-0.03em", fontWeight: "850" },
+        ],
       },
       borderRadius: {
-        "2xl": "1rem",
-        "3xl": "1.5rem",
+        lg: "0.5rem",
+        xl: "0.75rem",
       },
-      boxShadow: {
-        soft: "0 4px 20px rgba(43, 43, 43, 0.06)",
-        lift: "0 12px 32px rgba(43, 43, 43, 0.1)",
-      },
-      animation: {
-        "float-slow": "float 6s ease-in-out infinite",
-        "fade-in": "fadeIn 0.6s ease-out forwards",
-      },
-      keyframes: {
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-16px)" },
-        },
-        fadeIn: {
-          "0%": { opacity: "0", transform: "translateY(8px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
+      transitionDuration: {
+        DEFAULT: "200ms",
       },
     },
   },

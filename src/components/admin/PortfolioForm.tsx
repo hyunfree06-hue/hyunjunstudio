@@ -116,7 +116,7 @@ export function PortfolioForm({ portfolio, onDone, onCancel }: Props) {
   };
 
   const inputClass =
-    "w-full rounded-2xl border border-ink/10 bg-white px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20";
+    "w-full rounded-lg border border-paper-line bg-paper px-4 py-2.5 text-sm outline-none focus:border-ink";
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -187,7 +187,7 @@ export function PortfolioForm({ portfolio, onDone, onCancel }: Props) {
           <img
             src={thumbnailUrl}
             alt="thumbnail"
-            className="mt-2 h-28 rounded-2xl object-cover"
+            className="mt-2 h-28 rounded-lg object-cover"
           />
         )}
       </div>
@@ -201,10 +201,10 @@ export function PortfolioForm({ portfolio, onDone, onCancel }: Props) {
           }}
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
-          className={`rounded-2xl border-2 border-dashed px-4 py-8 text-center text-sm ${
+          className={`rounded-lg border-2 border-dashed px-4 py-8 text-center text-sm ${
             dragOver
-              ? "border-primary bg-primary/5"
-              : "border-ink/15 bg-cream/50"
+              ? "border-coral bg-coral/5"
+              : "border-paper-line bg-paper-warm/50"
           }`}
         >
           <p className="text-ink-muted">이미지를 드래그하거나 선택하세요</p>
@@ -280,7 +280,7 @@ export function PortfolioForm({ portfolio, onDone, onCancel }: Props) {
       </label>
 
       {error && (
-        <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-600">
+        <p className="border border-coral/30 bg-coral/5 px-4 py-3 text-sm text-coral">
           {error}
         </p>
       )}

@@ -5,6 +5,7 @@ import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Smartphone } from "lucide-react";
 import {
   submitInquiry,
   uploadInquiryAttachment,
@@ -26,25 +27,8 @@ type FormValues = z.infer<typeof schema>;
 
 const initialState: ContactFormState = {};
 
-function SubmitButton({
-  disabled,
-  pending,
-}: {
-  disabled?: boolean;
-  pending?: boolean;
-}) {
-  return (
-    <Button
-      type="submit"
-      variant="primary"
-      size="lg"
-      className="w-full"
-      disabled={pending || disabled}
-    >
-      {pending ? "전송 중…" : "문의 보내기"}
-    </Button>
-  );
-}
+const inputClass =
+  "w-full border-0 border-b border-paper-line bg-transparent px-0 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-ink-faint focus:border-ink";
 
 export function ContactForm() {
   const [state, formAction] = useFormState(submitInquiry, initialState);
@@ -114,9 +98,13 @@ export function ContactForm() {
 
   if (state.success) {
     return (
-      <div className="rounded-3xl border border-success/30 bg-success/10 px-6 py-12 text-center">
-        <div className="text-4xl">🎉</div>
-        <h3 className="mt-4 text-xl font-bold text-ink">문의가 전달됐어요!</h3>
+      <div className="border border-paper-line px-6 py-14 text-center">
+        <p className="text-xs font-medium tracking-[0.18em] text-coral">
+          SENT
+        </p>
+        <h3 className="mt-4 text-xl font-semibold tracking-tight text-ink">
+          문의가 전달됐어요
+        </h3>
         <p className="mt-2 text-sm text-ink-muted">
           확인 후 빠르게 연락드릴게요. 급하시면 카톡으로도 말씀해 주세요.
         </p>
@@ -126,61 +114,61 @@ export function ContactForm() {
 
   return (
     <div>
-      <form onSubmit={onSubmit} className="space-y-5">
+      <form onSubmit={onSubmit} className="space-y-8">
         <div>
-          <label className="mb-1.5 block text-sm font-semibold text-ink">
+          <label className="mb-1 block text-xs font-medium tracking-wide text-ink-light">
             이름 *
           </label>
           <input
             {...register("name")}
             name="name"
-            className="w-full rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className={inputClass}
             placeholder="홍길동"
           />
           {(errors.name || state.fieldErrors?.name) && (
-            <p className="mt-1 text-xs text-red-500">
+            <p className="mt-1.5 text-xs text-coral">
               {errors.name?.message || state.fieldErrors?.name}
             </p>
           )}
         </div>
 
         <div>
-          <label className="mb-1.5 block text-sm font-semibold text-ink">
+          <label className="mb-1 block text-xs font-medium tracking-wide text-ink-light">
             연락처 또는 이메일 *
           </label>
           <input
             {...register("contact")}
             name="contact"
-            className="w-full rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            className={inputClass}
             placeholder="010-1234-5678 또는 email@example.com"
           />
           {(errors.contact || state.fieldErrors?.contact) && (
-            <p className="mt-1 text-xs text-red-500">
+            <p className="mt-1.5 text-xs text-coral">
               {errors.contact?.message || state.fieldErrors?.contact}
             </p>
           )}
         </div>
 
         <div>
-          <label className="mb-1.5 block text-sm font-semibold text-ink">
+          <label className="mb-1 block text-xs font-medium tracking-wide text-ink-light">
             문의 내용 *
           </label>
           <textarea
             {...register("message")}
             name="message"
-            rows={6}
-            className="w-full resize-y rounded-2xl border border-ink/10 bg-white px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            rows={5}
+            className={`${inputClass} resize-y`}
             placeholder="어떤 작업이 필요하신지 편하게 적어 주세요"
           />
           {(errors.message || state.fieldErrors?.message) && (
-            <p className="mt-1 text-xs text-red-500">
+            <p className="mt-1.5 text-xs text-coral">
               {errors.message?.message || state.fieldErrors?.message}
             </p>
           )}
         </div>
 
         <div>
-          <label className="mb-1.5 block text-sm font-semibold text-ink">
+          <label className="mb-2 block text-xs font-medium tracking-wide text-ink-light">
             사진 첨부 (선택)
           </label>
           <input
@@ -189,19 +177,19 @@ export function ContactForm() {
             accept="image/*"
             multiple
             onChange={(e) => handleFiles(e.target.files)}
-            className="w-full rounded-2xl border border-dashed border-ink/15 bg-white px-4 py-3 text-sm file:mr-3 file:rounded-xl file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-primary-dark"
+            className="w-full text-sm text-ink-muted file:mr-3 file:border file:border-paper-line file:bg-transparent file:px-3 file:py-1.5 file:text-sm file:text-ink"
           />
           {uploading && (
-            <p className="mt-1 text-xs text-ink-muted">업로드 중…</p>
+            <p className="mt-1.5 text-xs text-ink-muted">업로드 중…</p>
           )}
           {uploadError && (
-            <p className="mt-1 text-xs text-red-500">{uploadError}</p>
+            <p className="mt-1.5 text-xs text-coral">{uploadError}</p>
           )}
           {urls.length > 0 && (
             <ul className="mt-2 space-y-1 text-xs text-ink-muted">
               {urls.map((u) => (
                 <li key={u} className="truncate">
-                  ✅ {u.split("/").pop()}
+                  {u.split("/").pop()}
                 </li>
               ))}
             </ul>
@@ -212,38 +200,47 @@ export function ContactForm() {
           <input
             type="checkbox"
             {...register("privacy")}
-            className="mt-1 h-4 w-4 rounded border-ink/20 text-primary focus:ring-primary"
+            className="mt-1 h-4 w-4 rounded-sm border-paper-line text-coral focus:ring-coral"
           />
           <span>
             문의 응대를 위한 개인정보(이름, 연락처) 수집·이용에 동의합니다. *
           </span>
         </label>
         {(errors.privacy || state.fieldErrors?.privacy) && (
-          <p className="-mt-3 text-xs text-red-500">
+          <p className="-mt-6 text-xs text-coral">
             {errors.privacy?.message || state.fieldErrors?.privacy}
           </p>
         )}
 
         {state.error && (
-          <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-600">
+          <p className="border border-coral/30 bg-coral/5 px-4 py-3 text-sm text-coral">
             {state.error}
           </p>
         )}
 
-        <SubmitButton disabled={uploading} pending={isPending} />
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          className="w-full sm:w-auto"
+          disabled={isPending || uploading}
+        >
+          {isPending ? "전송 중…" : "문의 보내기"}
+        </Button>
       </form>
 
-      <div className="mt-6">
+      <div className="mt-8 border-t border-paper-line pt-8">
         <Button
           type="button"
           variant="outline"
           size="lg"
-          className="w-full"
+          className="w-full sm:w-auto"
           onClick={handleSmsSend}
         >
-          📱 문자로 바로 문의하기
+          <Smartphone strokeWidth={1.5} size={16} />
+          문자로 바로 문의하기
         </Button>
-        <p className="mt-2 text-center text-xs text-ink-light">
+        <p className="mt-2 text-xs text-ink-faint">
           폼에 입력한 내용이 문자 본문으로 전달돼요
         </p>
       </div>

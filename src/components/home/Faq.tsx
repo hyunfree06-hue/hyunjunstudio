@@ -2,44 +2,42 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Plus } from "lucide-react";
 import { faqs } from "@/data/content";
 import { cn } from "@/lib/utils";
+import { FadeIn, SectionLabel } from "@/components/ui/Section";
 
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-20">
-      <motion.h2
-        initial={{ opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="mb-8 text-center text-2xl font-extrabold text-ink sm:text-3xl"
-      >
-        자주 묻는 질문
-      </motion.h2>
-      <div className="space-y-3">
+    <section className="mx-auto max-w-3xl px-5 py-24 sm:px-8 md:py-32">
+      <FadeIn>
+        <SectionLabel>— 05 / FAQ</SectionLabel>
+        <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+          자주 묻는 질문
+        </h2>
+      </FadeIn>
+
+      <div className="mt-12 divide-y divide-paper-line border-y border-paper-line">
         {faqs.map((faq, i) => {
           const isOpen = open === i;
           return (
-            <div
-              key={faq.q}
-              className="overflow-hidden rounded-3xl border border-ink/5 bg-white shadow-soft"
-            >
+            <div key={faq.q}>
               <button
                 type="button"
                 onClick={() => setOpen(isOpen ? null : i)}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                className="flex w-full items-center justify-between gap-4 py-5 text-left"
               >
-                <span className="font-semibold text-ink">{faq.q}</span>
-                <span
+                <span className="font-medium text-ink">{faq.q}</span>
+                <Plus
+                  strokeWidth={1.5}
+                  size={18}
                   className={cn(
-                    "text-lg text-primary transition-transform",
-                    isOpen && "rotate-45"
+                    "shrink-0 text-ink-light transition-transform duration-200",
+                    isOpen && "rotate-45 text-coral"
                   )}
-                >
-                  +
-                </span>
+                />
               </button>
               <AnimatePresence initial={false}>
                 {isOpen && (
@@ -47,9 +45,10 @@ export function Faq() {
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25 }}
+                    transition={{ duration: 0.25, ease: "easeOut" }}
+                    className="overflow-hidden"
                   >
-                    <p className="px-5 pb-5 text-sm leading-relaxed text-ink-muted">
+                    <p className="pb-5 pr-8 text-sm leading-relaxed text-ink-muted">
                       {faq.a}
                     </p>
                   </motion.div>

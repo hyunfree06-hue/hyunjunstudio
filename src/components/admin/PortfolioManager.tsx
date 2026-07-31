@@ -55,13 +55,13 @@ export function PortfolioManager({
       </div>
 
       {portfolios.length === 0 ? (
-        <p className="rounded-2xl bg-cream px-4 py-10 text-center text-sm text-ink-muted">
+        <p className="border border-paper-line px-4 py-10 text-center text-sm text-ink-muted">
           등록된 포트폴리오가 없어요
         </p>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-ink/5">
+        <div className="overflow-x-auto border border-paper-line">
           <table className="w-full min-w-[640px] text-left text-sm">
-            <thead className="bg-cream-dark/80 text-ink-muted">
+            <thead className="bg-paper-warm text-ink-muted">
               <tr>
                 <th className="px-4 py-3 font-semibold">제목</th>
                 <th className="px-4 py-3 font-semibold">카테고리</th>
@@ -80,7 +80,7 @@ export function PortfolioManager({
                   </td>
                   <td className="px-4 py-3">
                     {p.is_published ? (
-                      <span className="text-success">공개</span>
+                      <span className="text-ink">공개</span>
                     ) : (
                       <span className="text-ink-light">비공개</span>
                     )}
@@ -89,7 +89,7 @@ export function PortfolioManager({
                     <div className="flex gap-2">
                       <button
                         type="button"
-                        className="text-primary hover:underline"
+                        className="text-coral hover:underline"
                         onClick={() => {
                           setEditing(p);
                           setMode("edit");

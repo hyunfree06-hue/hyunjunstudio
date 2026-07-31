@@ -1,45 +1,41 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { processSteps } from "@/data/content";
+import { FadeIn, SectionLabel } from "@/components/ui/Section";
 
 export function Process() {
   return (
-    <section className="bg-white/50 py-16 md:py-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-12 text-center"
-        >
-          <h2 className="text-2xl font-extrabold text-ink sm:text-3xl">
-            작업 프로세스
-          </h2>
-          <p className="mt-3 text-ink-muted">
-            문의부터 마무리까지, 부담 없이 진행해요
-          </p>
-        </motion.div>
+    <section className="mx-auto max-w-6xl px-5 py-24 sm:px-8 md:py-32">
+      <FadeIn>
+        <SectionLabel>— 04 / PROCESS</SectionLabel>
+        <h2 className="text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+          작업 프로세스
+        </h2>
+        <p className="mt-4 text-ink-muted">
+          문의부터 마무리까지, 부담 없이 진행해요
+        </p>
+      </FadeIn>
 
-        <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="pointer-events-none absolute left-0 right-0 top-10 hidden h-0.5 bg-gradient-to-r from-primary/20 via-accent/40 to-success/30 lg:block" />
-          {processSteps.map((step, i) => (
-            <motion.div
-              key={step.step}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="relative text-center"
+      <div className="mt-14 grid gap-0 sm:grid-cols-2 lg:grid-cols-4">
+        {processSteps.map((step, i) => (
+          <FadeIn key={step.step} delay={i * 0.06}>
+            <div
+              className={`border-paper-line py-2 pr-8 ${
+                i < processSteps.length - 1 ? "lg:border-r" : ""
+              } ${i > 0 ? "sm:pl-8" : ""} border-t pt-8 lg:border-t-0 lg:pt-2`}
             >
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-white shadow-soft">
+              <span className="text-xs font-medium tracking-[0.15em] text-coral tabular-nums">
                 {step.step}
-              </div>
-              <h3 className="text-lg font-bold text-ink">{step.title}</h3>
-              <p className="mt-2 text-sm text-ink-muted">{step.description}</p>
-            </motion.div>
-          ))}
-        </div>
+              </span>
+              <h3 className="mt-4 text-lg font-semibold tracking-tight text-ink">
+                {step.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                {step.description}
+              </p>
+            </div>
+          </FadeIn>
+        ))}
       </div>
     </section>
   );

@@ -32,8 +32,8 @@ export default async function AdminDashboardPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       {error && (
-        <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-          ⚠️ {error}
+        <div className="mb-6 border border-paper-line bg-paper-warm px-4 py-3 text-sm text-ink-muted">
+          {error}
           <p className="mt-1 text-xs">
             Supabase URL / Service Role Key를 설정하고 마이그레이션 SQL을
             실행하면 정상 동작합니다.

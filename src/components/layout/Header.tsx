@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Menu, X } from "lucide-react";
 import { SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { LinkButton } from "@/components/ui/LinkButton";
@@ -16,17 +17,32 @@ const nav = [
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   if (pathname.startsWith("/admin")) return null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-ink/5 bg-cream/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-primary text-sm font-bold text-white">
+    <header
+      className={cn(
+        "sticky top-0 z-40 transition-all duration-200",
+        scrolled
+          ? "border-b border-paper-line bg-paper/80 backdrop-blur-md"
+          : "border-b border-transparent bg-transparent"
+      )}
+    >
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+        <Link href="/" className="flex items-center gap-2.5">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-[11px] font-semibold tracking-wide text-paper">
             H
           </span>
-          <span className="text-lg font-bold tracking-tight text-ink">
+          <span className="text-[15px] font-semibold tracking-tight text-ink">
             {SITE.brand}
           </span>
         </Link>
@@ -37,10 +53,10 @@ export function Header() {
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-xl px-3.5 py-2 text-sm font-medium transition-colors",
+                "px-3.5 py-2 text-sm transition-colors",
                 pathname === item.href
-                  ? "bg-primary/10 text-primary-dark"
-                  : "text-ink-muted hover:bg-ink/5 hover:text-ink"
+                  ? "font-medium text-ink"
+                  : "text-ink-muted hover:text-ink"
               )}
             >
               {item.label}
@@ -48,9 +64,9 @@ export function Header() {
           ))}
           <LinkButton
             href={SITE.kakaoOpenChat}
-            variant="kakao"
+            variant="outline"
             size="sm"
-            className="ml-2"
+            className="ml-3"
           >
             카톡 문의
           </LinkButton>
@@ -58,16 +74,16 @@ export function Header() {
 
         <button
           type="button"
-          className="rounded-xl p-2 text-ink md:hidden"
+          className="p-2 text-ink md:hidden"
           aria-label="메뉴"
           onClick={() => setOpen((v) => !v)}
         >
-          <span className="text-xl">{open ? "✕" : "☰"}</span>
+          {open ? <X strokeWidth={1.5} size={22} /> : <Menu strokeWidth={1.5} size={22} />}
         </button>
       </div>
 
       {open && (
-        <div className="border-t border-ink/5 bg-cream px-4 py-3 md:hidden">
+        <div className="border-t border-paper-line bg-paper px-5 py-4 md:hidden">
           <nav className="flex flex-col gap-1">
             {nav.map((item) => (
               <Link
@@ -75,9 +91,9 @@ export function Header() {
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "rounded-xl px-3 py-2.5 text-sm font-medium",
+                  "rounded-lg px-3 py-2.5 text-sm",
                   pathname === item.href
-                    ? "bg-primary/10 text-primary-dark"
+                    ? "font-medium text-ink"
                     : "text-ink-muted"
                 )}
               >
@@ -86,9 +102,9 @@ export function Header() {
             ))}
             <LinkButton
               href={SITE.kakaoOpenChat}
-              variant="kakao"
+              variant="outline"
               size="sm"
-              className="mt-2"
+              className="mt-3"
             >
               카톡으로 문의하기
             </LinkButton>

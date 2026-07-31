@@ -23,7 +23,9 @@ export function DashboardTabs({
   return (
     <div>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-extrabold text-ink">관리자 대시보드</h1>
+        <h1 className="text-2xl font-extrabold tracking-tight text-ink">
+          관리자 대시보드
+        </h1>
         <form action={adminLogout}>
           <Button type="submit" variant="ghost" size="sm">
             로그아웃
@@ -31,15 +33,15 @@ export function DashboardTabs({
         </form>
       </div>
 
-      <div className="mb-6 flex gap-2 border-b border-ink/10 pb-1">
+      <div className="mb-6 flex gap-1 border-b border-paper-line">
         <button
           type="button"
           onClick={() => setTab("portfolio")}
           className={cn(
-            "rounded-t-xl px-4 py-2.5 text-sm font-semibold transition-colors",
+            "-mb-px border-b-2 px-4 py-2.5 text-sm font-medium transition-colors",
             tab === "portfolio"
-              ? "bg-white text-primary border border-b-white border-ink/10 -mb-px"
-              : "text-ink-muted hover:text-ink"
+              ? "border-ink text-ink"
+              : "border-transparent text-ink-muted hover:text-ink"
           )}
         >
           포트폴리오 관리
@@ -48,22 +50,22 @@ export function DashboardTabs({
           type="button"
           onClick={() => setTab("inquiry")}
           className={cn(
-            "rounded-t-xl px-4 py-2.5 text-sm font-semibold transition-colors",
+            "-mb-px border-b-2 px-4 py-2.5 text-sm font-medium transition-colors",
             tab === "inquiry"
-              ? "bg-white text-primary border border-b-white border-ink/10 -mb-px"
-              : "text-ink-muted hover:text-ink"
+              ? "border-ink text-ink"
+              : "border-transparent text-ink-muted hover:text-ink"
           )}
         >
           문의 내역
           {newCount > 0 && (
-            <span className="ml-1.5 rounded-full bg-primary px-1.5 py-0.5 text-xs text-white">
+            <span className="ml-1.5 rounded-full bg-coral px-1.5 py-0.5 text-xs text-white tabular-nums">
               {newCount}
             </span>
           )}
         </button>
       </div>
 
-      <div className="rounded-3xl border border-ink/5 bg-white p-5 shadow-soft sm:p-6">
+      <div className="border border-paper-line bg-paper p-5 sm:p-6">
         {tab === "portfolio" ? (
           <PortfolioManager portfolios={portfolios} />
         ) : (
