@@ -100,29 +100,47 @@ export async function deletePortfolio(id: string) {
   return { success: true };
 }
 
-export async function uploadPortfolioImage(
-  formData: FormData
-): Promise<{ url?: string; error?: string }> {
-  await assertAdmin();
-  const file = formData.get("file") as File | null;
-  if (!file) return { error: "파일이 없어요" };
+/**
+ * 파일 본문은 받지 않음. 서명된 업로드 URL만 발급 → 클라이언트가 Storage로 직접 업로드.
+ * (Server Action bodySizeLimit / 413 회피)
+ */
+export async function createPortfolioUploadUrl(
+  filename: string
+): Promise<{ path?: string; token?: string; error?: string }> {
+  try {
+    await assertAdmin();
+    const supabase = createAdminClient();
 
-  const supabase = createAdminClient();
-  const ext = file.name.split(".").pop() || "bin";
-  const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  const buffer = Buffer.from(await file.arrayBuffer());
+    const rawExt = filename.split(".").pop() || "jpg";
+    const ext = rawExt.replace(/[^a-zA-Z0-9]/g, "") || "jpg";
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
 
-  const { error } = await supabase.storage
-    .from("portfolio-images")
-    .upload(path, buffer, { contentType: file.type, upsert: false });
+    const { data, error } = await supabase.storage
+      .from("portfolio-images")
+      .createSignedUploadUrl(path);
 
-  if (error) return { error: error.message };
+    if (error) return { error: error.message };
+    if (!data?.path || !data?.token) {
+      return { error: "서명 업로드 URL을 생성하지 못했습니다" };
+    }
 
-  const {
-    data: { publicUrl },
-  } = supabase.storage.from("portfolio-images").getPublicUrl(path);
+    return { path: data.path, token: data.token };
+  } catch (err) {
+    const message =
+      err instanceof Error ? err.message : "업로드 URL 생성에 실패했습니다";
+    return { error: message };
+  }
+}
 
-  return { url: publicUrl };
+/** @deprecated 파일 본문을 Server Action으로 보내면 413이 납니다. 클라이언트 직접 업로드를 사용하세요. */
+export async function uploadPortfolioImage(): Promise<{
+  url?: string;
+  error?: string;
+}> {
+  return {
+    error:
+      "이 업로드 방식은 더 이상 지원되지 않습니다. 페이지를 새로고침한 뒤 다시 시도해 주세요.",
+  };
 }
 
 export async function updateInquiryStatus(id: string, status: InquiryStatus) {

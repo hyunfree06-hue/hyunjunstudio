@@ -1,7 +1,7 @@
 export const SITE = {
   name: "고현준",
   brand: "Hynjun Work",
-  email: "hynjun@example.com",
+  email: "topprise2006@naver.com",
   phone: "01084992397",
   phoneDisplay: "010-8499-2397",
   kakaoOpenChat: "https://open.kakao.com/o/swF0XIGi",

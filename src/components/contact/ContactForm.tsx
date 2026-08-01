@@ -8,9 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Smartphone } from "lucide-react";
 import {
   submitInquiry,
-  uploadInquiryAttachment,
   type ContactFormState,
 } from "@/app/actions/contact";
+import { uploadInquiryAttachmentDirect } from "@/lib/image-upload";
 import { SITE } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
 
@@ -68,17 +68,28 @@ export function ContactForm() {
     setUploading(true);
     setUploadError(null);
 
-    const next: string[] = [...urls];
-    for (const file of Array.from(files)) {
-      const fd = new FormData();
-      fd.append("file", file);
-      const result = await uploadInquiryAttachment(fd);
-      if (result.url) next.push(result.url);
-      else if (result.error) setUploadError(result.error);
+    try {
+      const next: string[] = [...urls];
+      for (const file of Array.from(files)) {
+        const result = await uploadInquiryAttachmentDirect(file);
+        if (result.url) {
+          next.push(result.url);
+        } else {
+          setUploadError(
+            `이미지 업로드에 실패했습니다: ${result.error || "알 수 없는 오류"}`
+          );
+          break;
+        }
+      }
+      setUrls(next);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "알 수 없는 오류";
+      setUploadError(`이미지 업로드에 실패했습니다: ${message}`);
+    } finally {
+      setUploading(false);
+      if (fileRef.current) fileRef.current.value = "";
     }
-    setUrls(next);
-    setUploading(false);
-    if (fileRef.current) fileRef.current.value = "";
   };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -140,7 +151,7 @@ export function ContactForm() {
             {...register("contact")}
             name="contact"
             className={inputClass}
-            placeholder="010-1234-5678 또는 email@example.com"
+            placeholder="010-1234-5678 또는 이름@naver.com"
           />
           {(errors.contact || state.fieldErrors?.contact) && (
             <p className="mt-1.5 text-xs text-coral">

@@ -4,11 +4,8 @@ import { useState } from "react";
 import dynamic from "next/dynamic";
 import type { Portfolio } from "@/lib/types";
 import { PORTFOLIO_CATEGORIES } from "@/lib/constants";
-import {
-  createPortfolio,
-  updatePortfolio,
-  uploadPortfolioImage,
-} from "@/app/actions/portfolio";
+import { createPortfolio, updatePortfolio } from "@/app/actions/portfolio";
+import { uploadPortfolioImageDirect } from "@/lib/image-upload";
 import { Button } from "@/components/ui/Button";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
@@ -44,6 +41,7 @@ export function PortfolioForm({ portfolio, onDone, onCancel }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
 
   const uploadFiles = async (files: FileList | File[]) => {
@@ -51,33 +49,75 @@ export function PortfolioForm({ portfolio, onDone, onCancel }: Props) {
     setError(null);
     const list = Array.from(files);
     const urls: string[] = [];
-    for (const file of list) {
-      const fd = new FormData();
-      fd.append("file", file);
-      const res = await uploadPortfolioImage(fd);
-      if (res.url) urls.push(res.url);
-      else if (res.error) setError(res.error);
+
+    try {
+      for (let i = 0; i < list.length; i++) {
+        const file = list[i];
+        setUploadProgress(
+          list.length > 1
+            ? `이미지 업로드 중… (${i + 1}/${list.length})`
+            : "이미지 압축·업로드 중…"
+        );
+
+        const res = await uploadPortfolioImageDirect(file);
+        if (res.url) {
+          urls.push(res.url);
+        } else {
+          const msg = `이미지 업로드에 실패했습니다: ${res.error || "알 수 없는 오류"}`;
+          setError(msg);
+          break;
+        }
+      }
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "알 수 없는 오류";
+      setError(`이미지 업로드에 실패했습니다: ${message}`);
+    } finally {
+      setUploading(false);
+      setUploadProgress(null);
     }
-    setUploading(false);
+
     return urls;
   };
 
   const handleThumbnail = async (files: FileList | null) => {
     if (!files?.[0]) return;
-    const urls = await uploadFiles([files[0]]);
-    if (urls[0]) setThumbnailUrl(urls[0]);
+    try {
+      const urls = await uploadFiles([files[0]]);
+      if (urls[0]) setThumbnailUrl(urls[0]);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "알 수 없는 오류";
+      setError(`이미지 업로드에 실패했습니다: ${message}`);
+      setUploading(false);
+      setUploadProgress(null);
+    }
   };
 
   const handleExtraImages = async (files: FileList | null) => {
     if (!files?.length) return;
-    const urls = await uploadFiles(files);
-    setImages((prev) => [...prev, ...urls]);
+    try {
+      const urls = await uploadFiles(files);
+      if (urls.length) setImages((prev) => [...prev, ...urls]);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "알 수 없는 오류";
+      setError(`이미지 업로드에 실패했습니다: ${message}`);
+      setUploading(false);
+      setUploadProgress(null);
+    }
   };
 
   const handleDrop = async (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
-    await handleExtraImages(e.dataTransfer.files);
+    try {
+      await handleExtraImages(e.dataTransfer.files);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "알 수 없는 오류";
+      setError(`이미지 업로드에 실패했습니다: ${message}`);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,29 +130,36 @@ export function PortfolioForm({ portfolio, onDone, onCancel }: Props) {
     setSaving(true);
     setError(null);
 
-    const fd = new FormData();
-    fd.set("title", title);
-    fd.set("category", category);
-    fd.set("client_name", clientName);
-    fd.set("work_period", workPeriod);
-    fd.set("tech_stack", techStack);
-    fd.set("thumbnail_url", thumbnailUrl);
-    fd.set("images", images.join(","));
-    fd.set("preview_description", preview);
-    fd.set("detail_description", detail);
-    fd.set("external_link", externalLink);
-    fd.set("is_published", String(isPublished));
+    try {
+      const fd = new FormData();
+      fd.set("title", title);
+      fd.set("category", category);
+      fd.set("client_name", clientName);
+      fd.set("work_period", workPeriod);
+      fd.set("tech_stack", techStack);
+      fd.set("thumbnail_url", thumbnailUrl);
+      fd.set("images", images.join(","));
+      fd.set("preview_description", preview);
+      fd.set("detail_description", detail);
+      fd.set("external_link", externalLink);
+      fd.set("is_published", String(isPublished));
 
-    const result = portfolio
-      ? await updatePortfolio(portfolio.id, fd)
-      : await createPortfolio(fd);
+      const result = portfolio
+        ? await updatePortfolio(portfolio.id, fd)
+        : await createPortfolio(fd);
 
-    setSaving(false);
-    if (result.error) {
-      setError(result.error);
-      return;
+      if (result.error) {
+        setError(result.error);
+        return;
+      }
+      onDone();
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "알 수 없는 오류";
+      setError(`저장에 실패했습니다: ${message}`);
+    } finally {
+      setSaving(false);
     }
-    onDone();
   };
 
   const inputClass =
@@ -237,7 +284,11 @@ export function PortfolioForm({ portfolio, onDone, onCancel }: Props) {
             ))}
           </div>
         )}
-        {uploading && <p className="mt-1 text-xs text-ink-muted">업로드 중…</p>}
+        {uploading && (
+          <p className="mt-1 text-xs text-ink-muted">
+            {uploadProgress || "이미지 압축·업로드 중…"}
+          </p>
+        )}
       </div>
 
       <div>
