@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import { SITE, NAV_ITEMS } from "@/lib/constants";
+import { NAV_ITEMS } from "@/lib/constants";
+import { Logo } from "@/components/brand/Logo";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -28,16 +29,8 @@ export function Header() {
       )}
     >
       <div className="container-max flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2.5">
-          <span
-            aria-hidden
-            className="inline-flex h-6 w-6 items-center justify-center bg-ink text-[10px] font-semibold tracking-tight text-white"
-          >
-            PS
-          </span>
-          <span className="text-[13px] font-semibold tracking-[0.14em] text-ink">
-            {SITE.brand}
-          </span>
+        <Link href="/" aria-label="PRIMARY SYSTEM 홈으로" className="flex items-center">
+          <Logo size={22} />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

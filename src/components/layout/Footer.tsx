@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITE, NAV_ITEMS } from "@/lib/constants";
+import { Logo } from "@/components/brand/Logo";
 
 export function Footer() {
   return (
@@ -7,17 +8,7 @@ export function Footer() {
       <div className="container-max py-14">
         <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-2.5">
-              <span
-                aria-hidden
-                className="inline-flex h-6 w-6 items-center justify-center bg-ink text-[10px] font-semibold tracking-tight text-white"
-              >
-                PS
-              </span>
-              <span className="text-[13px] font-semibold tracking-[0.14em] text-ink">
-                {SITE.brand}
-              </span>
-            </div>
+            <Logo size={22} />
             <p className="mt-4 max-w-sm text-sm leading-6 text-ink-500">
               브랜드부터 시스템까지, 창업가와 기업이 필요한 디지털 자산을
               한 팀에서 설계하고 구축합니다.
