@@ -37,7 +37,14 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    types: {
+      "application/rss+xml": [
+        { url: "/rss.xml", title: `${SITE.brand} — 포트폴리오 RSS` },
+      ],
+    },
+  },
   verification: {
     // filled in after Search Console gives tokens
     google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
