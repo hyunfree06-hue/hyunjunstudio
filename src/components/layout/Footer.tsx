@@ -1,39 +1,83 @@
-"use client";
-
-import { usePathname } from "next/navigation";
-import { SITE } from "@/lib/constants";
+import Link from "next/link";
+import { SITE, NAV_ITEMS } from "@/lib/constants";
 
 export function Footer() {
-  const pathname = usePathname();
-  if (pathname.startsWith("/admin")) return null;
-
   return (
-    <footer className="border-t border-paper-line pb-24 md:pb-0">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-5 py-16 sm:flex-row sm:items-start sm:justify-between sm:px-8">
-        <div>
-          <p className="text-lg font-semibold tracking-tight text-ink">
-            {SITE.brand}
-          </p>
-          <p className="mt-2 text-sm text-ink-muted">{SITE.name}</p>
+    <footer className="mt-24 border-t border-surface-line bg-surface-alt">
+      <div className="container-max py-14">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <span
+                aria-hidden
+                className="inline-flex h-6 w-6 items-center justify-center bg-ink text-[10px] font-semibold tracking-tight text-white"
+              >
+                PS
+              </span>
+              <span className="text-[13px] font-semibold tracking-[0.14em] text-ink">
+                {SITE.brand}
+              </span>
+            </div>
+            <p className="mt-4 max-w-sm text-sm leading-6 text-ink-500">
+              브랜드부터 시스템까지, 창업가와 기업이 필요한 디지털 자산을
+              한 팀에서 설계하고 구축합니다.
+            </p>
+          </div>
+
+          <div>
+            <p className="eyebrow mb-3">Menu</p>
+            <ul className="space-y-2">
+              {NAV_ITEMS.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-ink-600 transition-colors hover:text-ink"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="eyebrow mb-3">Contact</p>
+            <ul className="space-y-2 text-sm text-ink-600">
+              <li>
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="link-underline"
+                >
+                  {SITE.email}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`tel:${SITE.phone}`}
+                  className="link-underline"
+                >
+                  {SITE.phoneDisplay}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.kakaoOpenChat}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="link-underline"
+                >
+                  카카오 오픈채팅
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className="flex flex-col gap-2 text-sm text-ink-muted sm:items-end">
-          <a
-            href={`mailto:${SITE.email}`}
-            className="transition-colors hover:text-ink"
-          >
-            {SITE.email}
-          </a>
-          <a
-            href={SITE.kakaoOpenChat}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition-colors hover:text-ink"
-          >
-            카카오 오픈채팅
-          </a>
-          <p className="mt-6 text-xs text-ink-faint">
-            © {SITE.copyrightYear} {SITE.name}
+
+        <div className="mt-12 flex flex-col gap-2 border-t border-surface-line pt-6 text-[11px] tracking-wide text-ink-400 md:flex-row md:items-center md:justify-between">
+          <p>
+            © {SITE.copyrightYear} {SITE.brand}. All rights reserved.
           </p>
+          <p>{SITE.domain} · 대표 {SITE.representative}</p>
         </div>
       </div>
     </footer>

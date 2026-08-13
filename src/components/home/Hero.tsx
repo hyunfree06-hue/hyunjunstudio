@@ -1,59 +1,50 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { SITE } from "@/lib/constants";
-import { LinkButton } from "@/components/ui/LinkButton";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 hero-grid opacity-60" />
-      <div className="pointer-events-none absolute inset-0 hero-fade" />
-
-      <div className="relative mx-auto max-w-6xl px-5 pb-20 pt-20 sm:px-8 sm:pb-28 sm:pt-28 lg:pt-32">
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="max-w-3xl"
-        >
-          <p className="mb-6 text-xs font-medium tracking-[0.2em] text-ink-light uppercase">
-            Freelance Web · App · Brand
-          </p>
-
-          <h1 className="text-display font-extrabold text-ink">
-            작은 아이디어를,
-            <br />
-            진짜 서비스로.
+    <section className="relative overflow-hidden border-b border-surface-line bg-surface-alt">
+      <div aria-hidden className="absolute inset-0 hairline opacity-40" />
+      <div className="container-max relative grid gap-16 py-24 md:grid-cols-[1.4fr_1fr] md:py-32">
+        <div>
+          <p className="eyebrow mb-6">{SITE.heroEyebrow}</p>
+          <h1 className="text-display text-ink text-balance">
+            {SITE.heroTitle.split("\n").map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
           </h1>
-
-          <p className="mt-7 max-w-lg text-base leading-relaxed text-ink-muted sm:text-lg">
+          <p className="mt-8 max-w-xl text-[15px] leading-7 text-ink-500 text-pretty">
             {SITE.heroSubtitle}
           </p>
-
-          <div className="mt-10 flex flex-wrap gap-3">
-            <LinkButton href="/portfolio" variant="primary" size="lg">
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <Link href="/contact" className="btn btn-primary rounded-none">
+              프로젝트 문의
+              <span aria-hidden>→</span>
+            </Link>
+            <Link href="/portfolio" className="btn btn-outline rounded-none">
               포트폴리오 보기
-              <ArrowRight strokeWidth={1.5} size={16} />
-            </LinkButton>
-            <LinkButton href="/contact" variant="outline" size="lg">
-              문의하기
-            </LinkButton>
+            </Link>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.4 }}
-          className="mt-24 flex flex-col items-start gap-2 text-ink-faint sm:mt-32"
-        >
-          <span className="text-[10px] font-medium tracking-[0.2em] uppercase">
-            Scroll
-          </span>
-          <ArrowDown strokeWidth={1.5} size={14} className="animate-bounce" />
-        </motion.div>
+        <div className="hidden md:block">
+          <div className="border border-ink-100 bg-white p-6">
+            <p className="eyebrow mb-6 text-ink-400">Operating Facts</p>
+            <dl className="space-y-5">
+              {SITE.metrics.map((m) => (
+                <div
+                  key={m.label}
+                  className="flex items-baseline justify-between border-b border-surface-line pb-4 last:border-none last:pb-0"
+                >
+                  <dt className="text-[13px] text-ink-500">{m.label}</dt>
+                  <dd className="font-mono text-sm text-ink">{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
       </div>
     </section>
   );

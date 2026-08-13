@@ -1,32 +1,28 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MessageCircle, Smartphone } from "lucide-react";
 import { SITE } from "@/lib/constants";
 
 export function MobileStickyCta() {
   const pathname = usePathname();
-  if (pathname.startsWith("/admin")) return null;
+  if (pathname.startsWith("/contact")) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-paper-line bg-paper/95 p-3 backdrop-blur-md md:hidden">
-      <div className="mx-auto flex max-w-lg gap-2">
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 md:hidden">
+      <div className="pointer-events-auto flex border-t border-surface-line bg-white/95 backdrop-blur">
         <a
-          href={SITE.kakaoOpenChat}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-kakao py-3 text-sm font-medium text-[#191919]"
+          href={`tel:${SITE.phone}`}
+          className="flex-1 border-r border-surface-line py-3 text-center text-[13px] text-ink"
         >
-          <MessageCircle strokeWidth={1.5} size={16} />
-          카톡 문의
+          전화 상담
         </a>
-        <a
-          href={`sms:${SITE.phone}`}
-          className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-coral py-3 text-sm font-medium text-white"
+        <Link
+          href="/contact"
+          className="flex-1 bg-ink py-3 text-center text-[13px] font-medium text-white"
         >
-          <Smartphone strokeWidth={1.5} size={16} />
-          문자 문의
-        </a>
+          프로젝트 문의
+        </Link>
       </div>
     </div>
   );

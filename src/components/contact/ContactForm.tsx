@@ -1,260 +1,174 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import { useFormState } from "react-dom";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Smartphone } from "lucide-react";
-import {
-  submitInquiry,
-  type ContactFormState,
-} from "@/app/actions/contact";
-import { uploadInquiryAttachmentDirect } from "@/lib/image-upload";
+import { useState } from "react";
 import { SITE } from "@/lib/constants";
-import { Button } from "@/components/ui/Button";
 
-const schema = z.object({
-  name: z.string().min(1, "이름을 입력해 주세요"),
-  contact: z.string().min(1, "연락처 또는 이메일을 입력해 주세요"),
-  message: z.string().min(1, "문의 내용을 입력해 주세요"),
-  privacy: z.boolean().refine((v) => v === true, {
-    message: "개인정보 수집에 동의해 주세요",
-  }),
-});
-
-type FormValues = z.infer<typeof schema>;
-
-const initialState: ContactFormState = {};
-
-const inputClass =
-  "w-full border-0 border-b border-paper-line bg-transparent px-0 py-3 text-[15px] text-ink outline-none transition-colors placeholder:text-ink-faint focus:border-ink";
+const BUDGETS = ["100만원 미만", "100~500만원", "500~1,000만원", "1,000만원 이상", "미정"];
+const TOPICS = ["브랜드 · 로고", "웹사이트", "SaaS · 프로덕트", "SEO · 검색 최적화", "기타"];
 
 export function ContactForm() {
-  const [state, formAction] = useFormState(submitInquiry, initialState);
-  const [urls, setUrls] = useState<string[]>([]);
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState<string | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [isPending, startTransition] = useTransition();
-
-  const {
-    register,
-    watch,
-    trigger,
-    formState: { errors },
-  } = useForm<FormValues>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      name: "",
-      contact: "",
-      message: "",
-      privacy: false,
-    },
+  const [state, setState] = useState<{
+    name: string;
+    contact: string;
+    topic: string;
+    budget: string;
+    message: string;
+  }>({
+    name: "",
+    contact: "",
+    topic: TOPICS[0],
+    budget: BUDGETS[0],
+    message: "",
   });
+  const [submitted, setSubmitted] = useState(false);
 
-  const name = watch("name");
-  const contact = watch("contact");
-  const message = watch("message");
-
-  const handleSmsSend = () => {
-    const body = `[문의] ${name}\n연락처: ${contact}\n\n${message}`;
-    const encoded = encodeURIComponent(body);
-    window.location.href = `sms:${SITE.phone}?body=${encoded}`;
-  };
-
-  const handleFiles = async (files: FileList | null) => {
-    if (!files?.length) return;
-    setUploading(true);
-    setUploadError(null);
-
-    try {
-      const next: string[] = [...urls];
-      for (const file of Array.from(files)) {
-        const result = await uploadInquiryAttachmentDirect(file);
-        if (result.url) {
-          next.push(result.url);
-        } else {
-          setUploadError(
-            `이미지 업로드에 실패했습니다: ${result.error || "알 수 없는 오류"}`
-          );
-          break;
-        }
-      }
-      setUrls(next);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "알 수 없는 오류";
-      setUploadError(`이미지 업로드에 실패했습니다: ${message}`);
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  };
-
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const ok = await trigger();
-    if (!ok) return;
-
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    fd.set("attachmentUrls", urls.join(","));
-    fd.set("privacy", watch("privacy") ? "true" : "false");
-
-    startTransition(() => {
-      formAction(fd);
-    });
+    const subject = encodeURIComponent(
+      `[프로젝트 문의] ${state.topic} · ${state.name}`,
+    );
+    const body = encodeURIComponent(
+      [
+        `이름: ${state.name}`,
+        `연락처: ${state.contact}`,
+        `주제: ${state.topic}`,
+        `예산: ${state.budget}`,
+        "",
+        state.message,
+      ].join("\n"),
+    );
+    window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
+    setSubmitted(true);
   };
 
-  if (state.success) {
+  if (submitted) {
     return (
-      <div className="border border-paper-line px-6 py-14 text-center">
-        <p className="text-xs font-medium tracking-[0.18em] text-coral">
-          SENT
+      <div className="border border-surface-line bg-surface-alt p-8">
+        <p className="eyebrow mb-3">문의 전송 준비 완료</p>
+        <p className="text-[15px] leading-7 text-ink">
+          이메일 앱이 열렸어요. 내용을 확인하고 전송해 주시면 30분 이내
+          회신 드립니다.
         </p>
-        <h3 className="mt-4 text-xl font-semibold tracking-tight text-ink">
-          문의가 전달됐어요
-        </h3>
-        <p className="mt-2 text-sm text-ink-muted">
-          확인 후 빠르게 연락드릴게요. 급하시면 카톡으로도 말씀해 주세요.
-        </p>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a
+            href={`mailto:${SITE.email}`}
+            className="btn btn-outline rounded-none"
+          >
+            이메일 다시 열기
+          </a>
+          <a
+            href={SITE.kakaoOpenChat}
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-primary rounded-none"
+          >
+            카카오 오픈채팅으로 문의
+          </a>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <form onSubmit={onSubmit} className="space-y-8">
-        <div>
-          <label className="mb-1 block text-xs font-medium tracking-wide text-ink-light">
-            이름 *
-          </label>
-          <input
-            {...register("name")}
-            name="name"
-            className={inputClass}
-            placeholder="홍길동"
-          />
-          {(errors.name || state.fieldErrors?.name) && (
-            <p className="mt-1.5 text-xs text-coral">
-              {errors.name?.message || state.fieldErrors?.name}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="mb-1 block text-xs font-medium tracking-wide text-ink-light">
-            연락처 또는 이메일 *
-          </label>
-          <input
-            {...register("contact")}
-            name="contact"
-            className={inputClass}
-            placeholder="010-1234-5678 또는 이름@naver.com"
-          />
-          {(errors.contact || state.fieldErrors?.contact) && (
-            <p className="mt-1.5 text-xs text-coral">
-              {errors.contact?.message || state.fieldErrors?.contact}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="mb-1 block text-xs font-medium tracking-wide text-ink-light">
-            문의 내용 *
-          </label>
-          <textarea
-            {...register("message")}
-            name="message"
-            rows={5}
-            className={`${inputClass} resize-y`}
-            placeholder="어떤 작업이 필요하신지 편하게 적어 주세요"
-          />
-          {(errors.message || state.fieldErrors?.message) && (
-            <p className="mt-1.5 text-xs text-coral">
-              {errors.message?.message || state.fieldErrors?.message}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="mb-2 block text-xs font-medium tracking-wide text-ink-light">
-            사진 첨부 (선택)
-          </label>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={(e) => handleFiles(e.target.files)}
-            className="w-full text-sm text-ink-muted file:mr-3 file:border file:border-paper-line file:bg-transparent file:px-3 file:py-1.5 file:text-sm file:text-ink"
-          />
-          {uploading && (
-            <p className="mt-1.5 text-xs text-ink-muted">업로드 중…</p>
-          )}
-          {uploadError && (
-            <p className="mt-1.5 text-xs text-coral">{uploadError}</p>
-          )}
-          {urls.length > 0 && (
-            <ul className="mt-2 space-y-1 text-xs text-ink-muted">
-              {urls.map((u) => (
-                <li key={u} className="truncate">
-                  {u.split("/").pop()}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <label className="flex items-start gap-2.5 text-sm text-ink-muted">
-          <input
-            type="checkbox"
-            {...register("privacy")}
-            className="mt-1 h-4 w-4 rounded-sm border-paper-line text-coral focus:ring-coral"
-          />
-          <span>
-            문의 응대를 위한 개인정보(이름, 연락처) 수집·이용에 동의합니다. *
-          </span>
-        </label>
-        {(errors.privacy || state.fieldErrors?.privacy) && (
-          <p className="-mt-6 text-xs text-coral">
-            {errors.privacy?.message || state.fieldErrors?.privacy}
-          </p>
-        )}
-
-        {state.error && (
-          <p className="border border-coral/30 bg-coral/5 px-4 py-3 text-sm text-coral">
-            {state.error}
-          </p>
-        )}
-
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          className="w-full sm:w-auto"
-          disabled={isPending || uploading}
-        >
-          {isPending ? "전송 중…" : "문의 보내기"}
-        </Button>
-      </form>
-
-      <div className="mt-8 border-t border-paper-line pt-8">
-        <Button
-          type="button"
-          variant="outline"
-          size="lg"
-          className="w-full sm:w-auto"
-          onClick={handleSmsSend}
-        >
-          <Smartphone strokeWidth={1.5} size={16} />
-          문자로 바로 문의하기
-        </Button>
-        <p className="mt-2 text-xs text-ink-faint">
-          폼에 입력한 내용이 문자 본문으로 전달돼요
-        </p>
+    <form
+      onSubmit={onSubmit}
+      className="grid gap-6 border border-surface-line bg-white p-6 md:p-8"
+    >
+      <Field label="이름 / 소속">
+        <input
+          required
+          type="text"
+          value={state.name}
+          onChange={(e) => setState((s) => ({ ...s, name: e.target.value }))}
+          className={inputClass}
+          placeholder="홍길동 / (주)회사명"
+        />
+      </Field>
+      <Field label="연락처 (이메일 또는 전화)">
+        <input
+          required
+          type="text"
+          value={state.contact}
+          onChange={(e) => setState((s) => ({ ...s, contact: e.target.value }))}
+          className={inputClass}
+          placeholder="example@company.com"
+        />
+      </Field>
+      <div className="grid gap-6 md:grid-cols-2">
+        <Field label="문의 주제">
+          <select
+            value={state.topic}
+            onChange={(e) => setState((s) => ({ ...s, topic: e.target.value }))}
+            className={selectClass}
+          >
+            {TOPICS.map((t) => (
+              <option key={t}>{t}</option>
+            ))}
+          </select>
+        </Field>
+        <Field label="예상 예산">
+          <select
+            value={state.budget}
+            onChange={(e) => setState((s) => ({ ...s, budget: e.target.value }))}
+            className={selectClass}
+          >
+            {BUDGETS.map((b) => (
+              <option key={b}>{b}</option>
+            ))}
+          </select>
+        </Field>
       </div>
-    </div>
+      <Field label="프로젝트 개요">
+        <textarea
+          required
+          rows={6}
+          value={state.message}
+          onChange={(e) => setState((s) => ({ ...s, message: e.target.value }))}
+          className={`${inputClass} resize-y`}
+          placeholder="어떤 것을 만들고 싶으신지, 참고 사이트 · 일정 · 기타 특이사항을 편하게 적어주세요."
+        />
+      </Field>
+      <div className="flex flex-wrap items-center gap-3">
+        <button type="submit" className="btn btn-primary rounded-none">
+          이메일로 문의 보내기 →
+        </button>
+        <a
+          href={SITE.kakaoOpenChat}
+          target="_blank"
+          rel="noreferrer"
+          className="btn btn-outline rounded-none"
+        >
+          카카오 오픈채팅으로 바로 대화
+        </a>
+      </div>
+      <p className="text-[11px] leading-5 text-ink-400">
+        전송 시 기본 이메일 앱이 열립니다. 이메일이 아닌 다른 방식으로
+        접수를 원하시면 카톡 · 전화(
+        <a href={`tel:${SITE.phone}`} className="underline">
+          {SITE.phoneDisplay}
+        </a>
+        )로 편하게 연락 주세요.
+      </p>
+    </form>
+  );
+}
+
+const inputClass =
+  "w-full border border-surface-line bg-white px-3 py-2.5 text-[14px] text-ink outline-none transition-colors placeholder:text-ink-400 focus:border-ink";
+const selectClass =
+  "w-full border border-surface-line bg-white px-3 py-2.5 text-[14px] text-ink outline-none transition-colors focus:border-ink";
+
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label className="grid gap-2">
+      <span className="eyebrow">{label}</span>
+      {children}
+    </label>
   );
 }

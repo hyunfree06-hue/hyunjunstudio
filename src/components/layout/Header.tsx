@@ -2,17 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
-import { SITE } from "@/lib/constants";
+import { useState, useEffect } from "react";
+import { SITE, NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-import { LinkButton } from "@/components/ui/LinkButton";
-
-const nav = [
-  { href: "/", label: "홈" },
-  { href: "/portfolio", label: "포트폴리오" },
-  { href: "/contact", label: "문의하기" },
-];
 
 export function Header() {
   const pathname = usePathname();
@@ -20,94 +12,107 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 4);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  if (pathname.startsWith("/admin")) return null;
+  useEffect(() => setOpen(false), [pathname]);
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-40 transition-all duration-200",
-        scrolled
-          ? "border-b border-paper-line bg-paper/80 backdrop-blur-md"
-          : "border-b border-transparent bg-transparent"
+        "sticky top-0 z-40 w-full border-b bg-white/85 backdrop-blur transition-colors",
+        scrolled ? "border-surface-line" : "border-transparent",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
+      <div className="container-max flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-ink text-[11px] font-semibold tracking-wide text-paper">
-            H
+          <span
+            aria-hidden
+            className="inline-flex h-6 w-6 items-center justify-center bg-ink text-[10px] font-semibold tracking-tight text-white"
+          >
+            PS
           </span>
-          <span className="text-[15px] font-semibold tracking-tight text-ink">
+          <span className="text-[13px] font-semibold tracking-[0.14em] text-ink">
             {SITE.brand}
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "px-3.5 py-2 text-sm transition-colors",
-                pathname === item.href
-                  ? "font-medium text-ink"
-                  : "text-ink-muted hover:text-ink"
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-          <LinkButton
-            href={SITE.kakaoOpenChat}
-            variant="outline"
-            size="sm"
-            className="ml-3"
-          >
-            카톡 문의
-          </LinkButton>
-        </nav>
-
-        <button
-          type="button"
-          className="p-2 text-ink md:hidden"
-          aria-label="메뉴"
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X strokeWidth={1.5} size={22} /> : <Menu strokeWidth={1.5} size={22} />}
-        </button>
-      </div>
-
-      {open && (
-        <div className="border-t border-paper-line bg-paper px-5 py-4 md:hidden">
-          <nav className="flex flex-col gap-1">
-            {nav.map((item) => (
+        <nav className="hidden items-center gap-8 md:flex">
+          {NAV_ITEMS.map((item) => {
+            const active =
+              item.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(item.href);
+            return (
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={() => setOpen(false)}
                 className={cn(
-                  "rounded-lg px-3 py-2.5 text-sm",
-                  pathname === item.href
+                  "text-[13px] transition-colors",
+                  active
                     ? "font-medium text-ink"
-                    : "text-ink-muted"
+                    : "text-ink-500 hover:text-ink",
                 )}
               >
                 {item.label}
               </Link>
+            );
+          })}
+        </nav>
+
+        <div className="hidden items-center gap-3 md:flex">
+          <Link
+            href="/contact"
+            className="btn btn-primary rounded-none px-4 py-2 text-[13px]"
+          >
+            프로젝트 문의
+          </Link>
+        </div>
+
+        <button
+          type="button"
+          aria-label="메뉴 열기"
+          onClick={() => setOpen((v) => !v)}
+          className="inline-flex h-9 w-9 items-center justify-center md:hidden"
+        >
+          <span
+            aria-hidden
+            className={cn(
+              "block h-px w-5 bg-ink transition-transform",
+              open ? "translate-y-[3px] rotate-45" : "",
+            )}
+          />
+          <span
+            aria-hidden
+            className={cn(
+              "-mt-[6px] block h-px w-5 bg-ink transition-transform",
+              open ? "translate-y-[-3px] -rotate-45" : "",
+            )}
+          />
+        </button>
+      </div>
+
+      {open && (
+        <div className="border-t border-surface-line bg-white md:hidden">
+          <nav className="container-max flex flex-col py-4">
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="border-b border-surface-line py-3 text-sm text-ink"
+              >
+                {item.label}
+              </Link>
             ))}
-            <LinkButton
-              href={SITE.kakaoOpenChat}
-              variant="outline"
-              size="sm"
-              className="mt-3"
+            <Link
+              href="/contact"
+              className="btn btn-primary mt-4 rounded-none"
             >
-              카톡으로 문의하기
-            </LinkButton>
+              프로젝트 문의
+            </Link>
           </nav>
         </div>
       )}
