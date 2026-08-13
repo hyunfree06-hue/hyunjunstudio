@@ -8,7 +8,7 @@ export const SITE = {
   phoneDisplay: "010-8499-2397",
   domain: "primarysystem.kr",
   url: "https://primarysystem.kr",
-  kakaoOpenChat: "https://open.kakao.com/o/swF0XIGi",
+  kakaoOpenChat: "https://open.kakao.com/o/sATtCEIi",
   address: "대한민국",
   representative: "고현준",
   tagline: "Design · Web · System",
