@@ -13,9 +13,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/portfolio`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/company`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
-    { url: `${base}/interior`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
-    { url: `${base}/franchise`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
-    { url: `${base}/food-business`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
   ];
 
   const portfolioRoutes: MetadataRoute.Sitemap = PORTFOLIO_ITEMS.map((item) => ({

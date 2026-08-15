@@ -33,14 +33,6 @@ export const NAV_ITEMS = [
   { href: "/contact", label: "문의" },
 ] as const;
 
-// 업종별 파트너 프로그램 랜딩페이지. 메인 헤더 내비게이션에는 넣지 않고
-// 홈 IndustryPrograms 섹션 + Footer에서만 진입점을 노출한다.
-export const INDUSTRY_ITEMS = [
-  { href: "/interior", label: "인테리어" },
-  { href: "/franchise", label: "프랜차이즈" },
-  { href: "/food-business", label: "식품 · 외식" },
-] as const;
-
 export const PORTFOLIO_CATEGORIES = [
   "전체",
   "웹사이트",
