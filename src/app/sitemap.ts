@@ -9,9 +9,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: `${base}/`, lastModified: now, changeFrequency: "weekly", priority: 1.0 },
     { url: `${base}/services`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/services/seo-growth-package`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
     { url: `${base}/portfolio`, lastModified: now, changeFrequency: "weekly", priority: 0.9 },
     { url: `${base}/company`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/interior`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${base}/franchise`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${base}/food-business`, lastModified: now, changeFrequency: "monthly", priority: 0.75 },
   ];
 
   const portfolioRoutes: MetadataRoute.Sitemap = PORTFOLIO_ITEMS.map((item) => ({

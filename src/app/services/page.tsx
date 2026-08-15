@@ -41,13 +41,15 @@ const GROUPS = [
     no: "03",
     title: "검색 최적화 · 콘텐츠 확장",
     intro:
-      "제작 이후에도 검색 유입이 계속 늘어나도록 색인 구조 · 스키마 · 사이트맵 · 콘텐츠 등록까지 유지 · 관리합니다.",
+      "제작 이후에도 검색 유입이 계속 늘어나도록 색인 구조 · 스키마 · 사이트맵 · 콘텐츠 등록까지 유지 · 관리합니다. 이 영역은 SEO Growth Package로 상품화되어 있습니다.",
     bullets: [
       "SEO 등록 (Google, Naver)",
       "구조화 데이터 · 사이트맵",
-      "고객후기 · 작업사례 콘텐츠 확장 (최대 1,000건)",
+      "산업 · 서비스별 SEO 랜딩페이지",
       "GA4 · GSC 리포트",
     ],
+    href: "/services/seo-growth-package",
+    hrefLabel: "SEO Growth Package 자세히 보기",
   },
   {
     id: "software",
@@ -107,6 +109,14 @@ export default function ServicesPage() {
                   </li>
                 ))}
               </ul>
+              {"href" in g && g.href && (
+                <Link
+                  href={g.href}
+                  className="mt-6 inline-flex items-center gap-2 text-[13px] font-medium text-accent hover:underline"
+                >
+                  {g.hrefLabel} →
+                </Link>
+              )}
             </div>
           </section>
         ))}

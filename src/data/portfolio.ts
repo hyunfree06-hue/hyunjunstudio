@@ -7,6 +7,13 @@ export type PortfolioCategory =
   | "브랜드 · 로고"
   | "리서치 · 문서";
 
+export type CaseStudy = {
+  problem: string; // 고객이 겪던 문제
+  request: string; // 고객의 요청
+  whatWeDid: string[]; // 실제로 한 일
+  result: string; // 무엇이 구축/변화됐는지 (허위 수치 없이)
+};
+
 export type PortfolioItem = {
   slug: string;
   title: string;
@@ -21,6 +28,8 @@ export type PortfolioItem = {
   thumbnail: string; // /portfolio/xxx.png
   images: string[]; // all detail images in order
   externalUrl?: string;
+  // 대표 프로젝트만 채운다. description을 재구성한 것이며 새 사실을 추가하지 않는다.
+  caseStudy?: CaseStudy;
 };
 
 // helper for public paths
@@ -42,6 +51,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     stack: ["Next.js", "Tailwind CSS", "Vercel"],
     thumbnail: p("case-02_01.png"),
     images: [p("case-02_01.png"), p("case-02_02.png")],
+    caseStudy: {
+      problem: "광고를 보고 유입된 대량발주 담당자가 곧바로 문의로 이어지지 않는 것이 문제였습니다.",
+      request: "대량발주 문의를 리드로 전환시키는 신규 랜딩 페이지 제작",
+      whatWeDid: [
+        "헤더 상단에 주력 프로모션 라인을 상시 노출해 재유입 유도",
+        "히어로 영역에 신뢰 카피 강조",
+        "대량발주 문의 CTA와 상품 카탈로그로 이어지는 구조 설계",
+      ],
+      result: "광고 유입에서 문의까지 하나의 흐름으로 이어지는 랜딩 페이지 구조를 갖췄습니다.",
+    },
   },
   {
     slug: "mecha-coding",
@@ -57,6 +76,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     stack: ["Next.js", "Tailwind CSS", "Vercel"],
     thumbnail: p("case-03_01.png"),
     images: [p("case-03_01.png"), p("case-03_02.png")],
+    caseStudy: {
+      problem: "실적은 있지만 프로그램별 정보가 흩어져 있어 상담 문의로 이어지는 동선이 약했습니다.",
+      request: "VEX Korea 챔피언 지도 실적을 살리면서 프로그램별 정보를 정리한 공식 사이트",
+      whatWeDid: [
+        "VEX Korea 챔피언 지도 실적을 히어로 배경으로 노출",
+        "초·중·고 프로그램별 커리큘럼 정보 위계 재정리",
+        "상담 문의를 단일 뷰에서 전달하는 구조 설계",
+      ],
+      result: "실적과 프로그램 정보, 상담 문의가 한 화면 흐름으로 연결된 공식 사이트를 완성했습니다.",
+    },
   },
   {
     slug: "biolsurok",
@@ -72,6 +101,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     stack: ["Next.js", "Tailwind CSS"],
     thumbnail: p("case-04_01.png"),
     images: [p("case-04_01.png"), p("case-04_02.png")],
+    caseStudy: {
+      problem: "건강기능식품 D2C 시장에서 프리미엄한 인상과 신뢰를 동시에 전달해야 했습니다.",
+      request: "오래 앉아있는 현대인을 타깃으로 한 프리미엄 D2C 사이트",
+      whatWeDid: [
+        "타깃에 맞춘 카피 톤 정제",
+        "제품 이미지·구매 CTA·브랜드 스토리를 여백 중심 레이아웃으로 배치",
+        "GMP 인증, 식이섬유 함량 등 신뢰 지표를 히어로 하단에 상시 노출",
+      ],
+      result: "프리미엄과 신뢰를 함께 전달하는 D2C 사이트를 완성했습니다.",
+    },
   },
   {
     slug: "snack-kuji",
@@ -87,6 +126,15 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     stack: ["Next.js", "Tailwind CSS"],
     thumbnail: p("case-05_01.png"),
     images: [p("case-05_01.png"), p("case-05_02.png")],
+    caseStudy: {
+      problem: "오프라인 매장의 재미있는 경험을 온라인에서 그대로 살리기 어려웠습니다.",
+      request: "무인 편의점의 '뽑기' 경험을 온라인 커머스로 재현",
+      whatWeDid: [
+        "쿠폰 번호를 고르는 오프라인 놀이 요소를 온라인 인터랙션으로 구현",
+        "이모지·아이콘 대신 실제 상품 그리드를 크게 노출하는 카테고리 UI 설계",
+      ],
+      result: "인터랙션 자체가 브랜드 자산이 되는 온라인 커머스를 완성했습니다.",
+    },
   },
 
   // ---------- SaaS · 프로덕트 ----------
@@ -134,6 +182,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     stack: ["Next.js", "Canvas API", "Tailwind CSS"],
     thumbnail: p("case-08_01.png"),
     images: [p("case-08_01.png"), p("case-08_02.png")],
+    caseStudy: {
+      problem: "독립 크리에이터가 여러 툴을 오가지 않고 하나의 캔버스에서 작업을 완결하기 어려웠습니다.",
+      request: "AI 네이티브 디자인 워크스페이스, 랜딩 페이지부터 에디터 프로토타입까지",
+      whatWeDid: [
+        "하나의 캔버스에서 만들고 다듬고 조합하는 워크플로 설계",
+        "프롬프트로 요소를 즉시 삽입·수정하는 기능 설계",
+        "랜딩 페이지와 에디터 프로토타입 개발",
+      ],
+      result: "기획부터 프로토타입까지 이어지는 자체 프로덕트를 완성했습니다.",
+    },
   },
 
   // ---------- 브랜드 · 로고 ----------
@@ -184,6 +242,16 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
       p("hyungjejikhwa-interior1.png"),
       p("hyungjejikhwa-interior2.png"),
     ],
+    caseStudy: {
+      problem: "로고만으로는 실제 매장 사인·인쇄물까지 일관되게 적용하기 어려웠습니다.",
+      request: "숯불 직화 BBQ 브랜드의 로고부터 매장 인테리어 사인까지 이어지는 브랜드 시스템",
+      whatWeDid: [
+        "불꽃 심볼과 굵은 붓 획 워드마크로 정체성 설계",
+        "컬러 배리에이션·흑백 조합 개발",
+        "매장 인테리어 사인까지 실사 적용",
+      ],
+      result: "로고 하나가 아니라 매장 사인까지 일관되게 이어지는 브랜드 시스템을 완성했습니다.",
+    },
   },
   {
     slug: "oftb",

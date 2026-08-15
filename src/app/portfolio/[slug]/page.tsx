@@ -88,6 +88,39 @@ export default function PortfolioDetail({ params }: Props) {
         </div>
       </div>
 
+      {/* case study (대표 프로젝트만) */}
+      {item.caseStudy && (
+        <div className="border-t border-surface-line bg-surface-alt">
+          <div className="container-max py-16 md:py-20">
+            <p className="eyebrow mb-10">Case Study</p>
+            <div className="grid gap-px border border-surface-line bg-surface-line md:grid-cols-2">
+              <CaseStudyCell no="01" label="문제" body={item.caseStudy.problem} />
+              <CaseStudyCell no="02" label="요청" body={item.caseStudy.request} />
+              <div className="bg-white p-8 md:p-10">
+                <p className="font-mono text-[11px] tracking-widest text-ink-400">
+                  03
+                </p>
+                <h3 className="mt-4 text-[13px] font-medium text-ink-500">
+                  우리가 한 일
+                </h3>
+                <ul className="mt-4 grid gap-2">
+                  {item.caseStudy.whatWeDid.map((line) => (
+                    <li
+                      key={line}
+                      className="flex items-start gap-3 text-[14px] leading-7 text-ink"
+                    >
+                      <span aria-hidden className="mt-3 h-px w-4 flex-none bg-ink" />
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <CaseStudyCell no="04" label="결과" body={item.caseStudy.result} />
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* images */}
       <div className="border-t border-surface-line bg-surface-alt">
         <div className="container-max py-16 md:py-20">
@@ -160,6 +193,24 @@ function MetaCell({ label, value }: { label: string; value: string }) {
     <div>
       <p className="eyebrow mb-2">{label}</p>
       <p className="text-[14px] text-ink">{value}</p>
+    </div>
+  );
+}
+
+function CaseStudyCell({
+  no,
+  label,
+  body,
+}: {
+  no: string;
+  label: string;
+  body: string;
+}) {
+  return (
+    <div className="bg-white p-8 md:p-10">
+      <p className="font-mono text-[11px] tracking-widest text-ink-400">{no}</p>
+      <h3 className="mt-4 text-[13px] font-medium text-ink-500">{label}</h3>
+      <p className="mt-4 text-[15px] leading-7 text-ink">{body}</p>
     </div>
   );
 }
