@@ -150,10 +150,6 @@ export default function InteriorPage() {
                 만드는 파트너로 협업합니다.
               </p>
             </div>
-            <p className="border-t border-surface-line pt-6 text-ink-500">
-              우리는 인테리어를 하지 않습니다. 인테리어 이후의 디지털 영역을
-              함께 만듭니다.
-            </p>
           </div>
         </div>
       </div>
