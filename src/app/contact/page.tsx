@@ -5,7 +5,8 @@ import { ContactForm } from "@/components/contact/ContactForm";
 export const metadata: Metadata = {
   title: "프로젝트 문의",
   description:
-    "프라이머리시스템에 프로젝트 문의를 남겨주세요. 평균 응답 30분 이내로 회신 드립니다.",
+    "프라이머리시스템에 프로젝트 문의를 남겨주세요. 로고·홈페이지·SEO·SaaS 개발 관련 상담을 받고 있으며, 평균 응답 30분 이내로 회신 드립니다.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

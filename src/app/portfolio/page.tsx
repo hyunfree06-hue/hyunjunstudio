@@ -13,6 +13,7 @@ export const metadata: Metadata = {
   title: "포트폴리오",
   description:
     "웹사이트, SaaS 프로덕트, 브랜드/로고, 리서치 문서까지 프라이머리시스템이 진행한 프로젝트 목록입니다.",
+  alternates: { canonical: "/portfolio" },
 };
 
 const FILTERS = ["전체", ...CATEGORY_ORDER] as const;

@@ -14,9 +14,25 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const item = getPortfolioBySlug(params.slug);
   if (!item) return { title: "포트폴리오" };
+
+  // summary는 카드용 한 줄이라 meta description으로는 너무 짧다.
+  // 상세 설명 앞부분을 붙여 검색결과 스니펫이 잘리지 않을 길이로 만든다.
+  const desc = `${item.summary}. ${item.description}`
+    .replace(/\s+/g, " ")
+    .slice(0, 155)
+    .trim();
+
   return {
     title: `${item.title}`,
-    description: item.summary,
+    description: desc,
+    alternates: { canonical: `/portfolio/${item.slug}` },
+    openGraph: {
+      title: item.title,
+      description: desc,
+      url: `/portfolio/${item.slug}`,
+      type: "article",
+      images: [{ url: item.thumbnail }],
+    },
   };
 }
 

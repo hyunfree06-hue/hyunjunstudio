@@ -5,7 +5,8 @@ import { SITE } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "서비스",
   description:
-    "프라이머리시스템의 제공 서비스 — 브랜드 · 웹 · SEO · 자체 소프트웨어.",
+    "프라이머리시스템의 제공 서비스 — 로고·브랜드 아이덴티티, 기업 웹사이트와 프로덕트 개발, 검색 최적화(SEO), 자체 소프트웨어까지 한 팀에서 진행합니다.",
+  alternates: { canonical: "/services" },
 };
 
 const GROUPS = [

@@ -37,8 +37,23 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: { index: true, follow: true },
+  // 고정 URL로 명시 선언. app/icon.* 자동생성은 배포마다 ?hash가 바뀌어
+  // 구글이 파비콘 URL을 안정적으로 인식하지 못하므로 사용하지 않는다.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "48x48 32x32 16x16", type: "image/x-icon" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/favicon.ico"],
+  },
+  manifest: "/site.webmanifest",
   alternates: {
-    canonical: "/",
+    // canonical은 여기서 전역 지정하지 않는다.
+    // 루트 layout에 canonical을 두면 모든 하위 페이지가 이를 상속해
+    // "전부 홈의 중복"으로 신고되어 색인에서 빠진다. 각 페이지에서 개별 선언할 것.
     types: {
       "application/rss+xml": [
         { url: "/rss.xml", title: `${SITE.brand} — 포트폴리오 RSS` },
@@ -60,7 +75,7 @@ const orgJsonLd = {
   name: SITE.brand,
   alternateName: SITE.brandKo,
   url: SITE.url,
-  logo: `${SITE.url}/icon.png`,
+  logo: `${SITE.url}/icon-512.png`,
   email: SITE.email,
   telephone: `+82-${SITE.phone.replace(/^0/, "").replace(/(\d{2})(\d{4})(\d{4})/, "$1-$2-$3")}`,
   address: { "@type": "PostalAddress", addressCountry: "KR" },

@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "회사소개",
   description:
     "프라이머리시스템은 브랜드부터 시스템까지 창업가와 기업의 디지털 자산을 한 팀에서 만드는 서울 기반 IT 스튜디오입니다.",
+  alternates: { canonical: "/company" },
 };
 
 const FACTS = [
