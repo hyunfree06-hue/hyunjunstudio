@@ -38,6 +38,50 @@ const p = (name: string) => `/portfolio/${name}`;
 export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   // ---------- 웹사이트 ----------
   {
+    slug: "coolguy-aircon",
+    title: "쿨가이 에어컨 · 홈페이지 + SEO",
+    client: "쿨가이 에어컨",
+    category: "웹사이트",
+    year: "2026",
+    summary: "수도권 에어컨 서비스 홈페이지 · 검색 유입 구조 통합",
+    description:
+      "수도권 60개 시·군·구를 대상으로 에어컨 설치·수리·가스충전·청소·철거 서비스를 제공하는 쿨가이 에어컨의 공식 웹사이트입니다. 서비스 안내, 대응 지역, 지역·증상별 블로그 아카이브, 문의 동선까지 한 팀에서 설계·구축했고 네이버 블로그(누적 조회 11만+) 연동과 검색 유입 구조를 함께 세팅했습니다.",
+    role: ["웹 개발", "정보 설계", "SEO 세팅"],
+    deliverables: [
+      "기업 홈페이지",
+      "블로그 아카이브 구조",
+      "네이버 블로그 연동",
+      "지역·증상별 SEO 랜딩",
+    ],
+    stack: ["Next.js", "Tailwind CSS", "Vercel"],
+    thumbnail: p("seo-proposal-03_01.png"),
+    images: [
+      p("seo-proposal-03_01.png"),
+      p("seo-proposal-03_02.png"),
+      p("seo-proposal-04_01.png"),
+      p("seo-proposal-05_01.png"),
+      p("seo-proposal-06_01.png"),
+      p("seo-proposal-07_01.png"),
+      p("seo-proposal-08_01.png"),
+      p("seo-proposal-09_01.png"),
+    ],
+    externalUrl: "https://cools.ai.kr",
+    caseStudy: {
+      problem:
+        "수도권 에어컨 서비스는 지역·증상 단위로 검색되는데, 홈페이지와 블로그가 분리돼 있어 검색으로 들어온 잠재 고객이 문의로 이어지지 않는 것이 문제였습니다.",
+      request:
+        "홈페이지·블로그·문의 동선을 하나의 사이트로 통합하고, 지역과 증상별로 계속 검색 노출되는 구조로 만들 것.",
+      whatWeDid: [
+        "서비스(설치·수리·가스충전·청소·철거)별로 구조화된 홈페이지 설계",
+        "지역·증상별 블로그 아카이브를 사이트에 편입해 검색 노출 자산화",
+        "네이버 블로그(누적 조회 11만+) 연동으로 신뢰 지표 상시 노출",
+        "전화·문자·홈페이지 문의로 이어지는 다중 접점 CTA 구조",
+      ],
+      result:
+        "서비스·지역·증상별 검색이 문의로 이어지는 통합 웹 구조를 구축했고, 제작 이후에도 지속적으로 유지·관리 중입니다.",
+    },
+  },
+  {
     slug: "kim-jihyun-portfolio",
     title: "김지현 · 작가 아카이브 웹사이트",
     client: "김지현 작가",
@@ -449,30 +493,6 @@ export const PORTFOLIO_ITEMS: PortfolioItem[] = [
     images: [p("case-10_01.png")],
   },
 
-  // ---------- 리서치 · 문서 ----------
-  {
-    slug: "seo-proposal",
-    title: "SEO 제안서 시스템",
-    client: "프라이머리시스템 세일즈 자산",
-    category: "리서치 · 문서",
-    year: "2026",
-    summary: "웹 제작 + 검색 노출 통합 제안서",
-    description:
-      "홈페이지 제작과 검색 최적화를 함께 제안하는 프라이머리시스템의 표준 세일즈 문서입니다. 검색 유입이 발생하는 원리, 실제 지표(Google Search Console 데이터), 제작 이후 유지 · 콘텐츠 확장 플랜까지 슬라이드 단위로 구조화했습니다.",
-    role: ["리서치", "문서 설계"],
-    deliverables: ["제안서 문서 (10p+)"],
-    thumbnail: p("seo-proposal-03_01.png"),
-    images: [
-      p("seo-proposal-03_01.png"),
-      p("seo-proposal-03_02.png"),
-      p("seo-proposal-04_01.png"),
-      p("seo-proposal-05_01.png"),
-      p("seo-proposal-06_01.png"),
-      p("seo-proposal-07_01.png"),
-      p("seo-proposal-08_01.png"),
-      p("seo-proposal-09_01.png"),
-    ],
-  },
 ];
 
 export const CATEGORY_ORDER: PortfolioCategory[] = [
