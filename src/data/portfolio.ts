@@ -38,6 +38,47 @@ const p = (name: string) => `/portfolio/${name}`;
 export const PORTFOLIO_ITEMS: PortfolioItem[] = [
   // ---------- 웹사이트 ----------
   {
+    slug: "kim-jihyun-portfolio",
+    title: "김지현 · 작가 아카이브 웹사이트",
+    client: "김지현 작가",
+    category: "웹사이트",
+    year: "2026",
+    summary: "회화 · 전시 · 비평 텍스트를 담은 작가 개인 아카이브",
+    description:
+      "회화 작가 김지현의 개인 아카이브 사이트입니다. 작품의 물성과 실제 스케일을 존중하는 미니멀한 그리드로 대표작을 나열하고, 각 작품은 실제 크기(예: 388×261cm)까지 함께 표기해 회화의 규모가 웹에서도 그대로 전달되도록 설계했습니다. 개인전 · 단체전 이력, 크리티컬 아카이브, 작가 소개까지 한 사이트 안에서 정리했습니다.",
+    role: ["웹 개발", "정보 설계"],
+    deliverables: ["작가 아카이브 웹사이트", "작품 라이트박스", "전시 이력 · About 페이지"],
+    stack: ["Next.js", "Tailwind CSS"],
+    thumbnail: p("kim-jihyun_01.jpg"),
+    images: [p("kim-jihyun_01.jpg"), p("kim-jihyun_02.jpg")],
+    externalUrl: "https://kim-jihyun.com",
+    caseStudy: {
+      problem: "작품의 실제 스케일과 물성이 웹에서 축소되어 사라지는 것이 문제였습니다. 회화 작가에게 작품의 크기는 정체성의 일부입니다.",
+      request: "작가 아카이브로서 작품 · 전시 · 비평까지 담되, 회화의 스케일과 물성이 사라지지 않는 사이트.",
+      whatWeDid: [
+        "작품 이미지 옆에 실제 규모(cm 단위)를 함께 표기하는 라이트박스 설계",
+        "작품이 주인공이 되도록 여백 · 그리드 위주의 미니멀 레이아웃",
+        "개인전 · 단체전 · 크리티컬 텍스트를 시간축으로 정리한 Exhibitions/Articles 페이지",
+      ],
+      result: "작품 이미지의 스케일 정보까지 놓치지 않고 담은 작가 아카이브 사이트를 완성했습니다.",
+    },
+  },
+  {
+    slug: "maison-bonjour",
+    title: "MAISON BONJOUR · 제주 아동복 커머스",
+    client: "MAISON BONJOUR",
+    category: "웹사이트",
+    year: "2026",
+    summary: "필름 무드의 브랜드 랜딩과 셀렉트샵 커머스",
+    description:
+      "제주에 기반을 둔 프리미엄 아동복 편집숍의 온라인 스토어입니다. 필름 톤의 히어로 비주얼로 브랜드 정체성을 먼저 전달한 뒤, Girl · Boy · Baby · Adult · Accessory · Brand 카테고리 기반으로 상품을 큐레이션합니다. 다국가 통화(대한민국·USD) 지원, 인스타그램 연동, 뉴스레터 구독까지 커머스 운영에 필요한 요소를 함께 세팅했습니다.",
+    role: ["웹 개발", "커머스 구축"],
+    deliverables: ["Shopify 커머스", "브랜드 랜딩", "카테고리 시스템", "다국가 통화 · SNS 연동"],
+    stack: ["Shopify", "Liquid"],
+    thumbnail: p("maison-bonjour_01.jpg"),
+    images: [p("maison-bonjour_01.jpg")],
+  },
+  {
     slug: "yutong-b2b-order",
     title: "유통 B2B 대량발주 사이트",
     client: "농산물 · 건강기능식품 유통사",

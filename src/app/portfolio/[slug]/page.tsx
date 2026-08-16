@@ -73,6 +73,25 @@ export default function PortfolioDetail({ params }: Props) {
           <MetaCell label="Deliverables" value={item.deliverables.join(" · ")} />
           <MetaCell label="Stack" value={item.stack?.join(" · ") ?? "—"} />
         </div>
+        {/* 라이브 사이트가 공개된 프로젝트만 URL 노출 */}
+        {item.externalUrl && (
+          <div className="border-t border-surface-line">
+            <div className="container-max flex flex-wrap items-center justify-between gap-4 py-5">
+              <div>
+                <p className="eyebrow mb-1">Live site</p>
+                <p className="text-[13px] text-ink-500">이 프로젝트는 실제로 공개된 사이트에서 확인하실 수 있습니다.</p>
+              </div>
+              <a
+                href={item.externalUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-outline rounded-none text-[13px]"
+              >
+                {item.externalUrl.replace(/^https?:\/\//, "").replace(/\/$/, "")} ↗
+              </a>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* description */}
